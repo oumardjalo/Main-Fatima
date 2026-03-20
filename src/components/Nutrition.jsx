@@ -1,14 +1,15 @@
 import { useState } from 'react';
-import { Plus, X, Droplets, Star, UtensilsCrossed } from 'lucide-react';
+import { Plus, X, Droplets, Star, UtensilsCrossed, Camera } from 'lucide-react';
 import { generateId, formatNumber } from '../utils/helpers';
 import { CalorieChart, FoodColorPieChart } from './Charts';
 import SavedFoodsModal from './SavedFoods';
 import Recipes from './Recipes';
+import FoodScanner from './FoodScanner';
 
 const FOOD_COLORS = [
   { id: 'green', label: 'Green', color: '#10B981', desc: 'Nutrient-dense' },
-  { id: 'yellow', label: 'Yellow', color: '#EAB308', desc: 'Moderate' },
-  { id: 'orange', label: 'Orange', color: '#F97316', desc: 'Calorie-dense' },
+  { id: 'yellow', label: 'Amber', color: '#EAB308', desc: 'Moderate' },
+  { id: 'red', label: 'Red', color: '#EF4444', desc: 'Calorie-dense' },
 ];
 
 const MEAL_TYPES = ['Breakfast', 'Lunch', 'Dinner', 'Snack'];
@@ -16,6 +17,7 @@ const MEAL_TYPES = ['Breakfast', 'Lunch', 'Dinner', 'Snack'];
 export default function Nutrition({ data, profile, onUpdateField, historicalData }) {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showRecipes, setShowRecipes] = useState(false);
+  const [showScanner, setShowScanner] = useState(false);
   const [addMealType, setAddMealType] = useState('Breakfast');
   const [expandedMeal, setExpandedMeal] = useState(null);
   const [form, setForm] = useState({
@@ -34,8 +36,11 @@ export default function Nutrition({ data, profile, onUpdateField, historicalData
   const macroTargets = profile?.macroTargets || { protein: 120, carbs: 200, fat: 60 };
 
   // Food color breakdown
-  const colorCounts = { green: 0, yellow: 0, orange: 0 };
-  meals.forEach(m => { if (colorCounts[m.color] !== undefined) colorCounts[m.color]++; });
+  const colorCounts = { green: 0, yellow: 0, red: 0 };
+  meals.forEach(m => {
+    if (m.color === 'orange') colorCounts.red++;
+    else if (colorCounts[m.color] !== undefined) colorCounts[m.color]++;
+  });
   const totalFoods = meals.length || 1;
 
   const waterData = data?.water || { glasses: 0, goal: 8 };
@@ -209,6 +214,18 @@ export default function Nutrition({ data, profile, onUpdateField, historicalData
         <p className="text-center text-sm text-gray-500 mt-2">{waterData.glasses} of {waterData.goal} glasses</p>
       </div>
 
+      {/* Scan Food Button */}
+      <button
+        onClick={() => setShowScanner(true)}
+        className="w-full bg-gradient-to-r from-teal-500 to-emerald-500 rounded-2xl shadow-sm p-4 flex items-center justify-center gap-3 hover:opacity-90 transition-all"
+      >
+        <Camera size={20} className="text-white" />
+        <div className="text-left">
+          <span className="text-sm font-semibold text-white block">Scan Your Food</span>
+          <span className="text-xs text-white/80">Take a photo or search to log instantly</span>
+        </div>
+      </button>
+
       {/* My Recipes button */}
       <button
         onClick={() => setShowRecipes(true)}
@@ -250,6 +267,15 @@ export default function Nutrition({ data, profile, onUpdateField, historicalData
         <Recipes
           onLogRecipe={addRecipeServing}
           onClose={() => setShowRecipes(false)}
+        />
+      )}
+
+      {/* Food Scanner Modal */}
+      {showScanner && (
+        <FoodScanner
+          mealType={addMealType}
+          onAddMeal={addMealFromSaved}
+          onClose={() => setShowScanner(false)}
         />
       )}
     </div>

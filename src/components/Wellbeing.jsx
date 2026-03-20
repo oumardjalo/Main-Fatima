@@ -1,6 +1,24 @@
 import { useState, useMemo } from 'react';
-import { Heart, Wind, ClipboardList } from 'lucide-react';
+import { Heart, Wind, ClipboardList, Sparkles } from 'lucide-react';
 import { MoodChart } from './Charts';
+
+const GRATITUDE_SUGGESTIONS = [
+  { emoji: '👶', label: 'My children' },
+  { emoji: '💕', label: 'My husband' },
+  { emoji: '🤲', label: 'My faith' },
+  { emoji: '💪', label: 'My health' },
+  { emoji: '✨', label: 'My beauty' },
+  { emoji: '🏠', label: 'My home' },
+  { emoji: '👨‍👩‍👧‍👦', label: 'My family' },
+  { emoji: '🌅', label: 'A new day' },
+  { emoji: '🍽️', label: 'Good food' },
+  { emoji: '😊', label: 'My body' },
+  { emoji: '🧘‍♀️', label: 'Inner peace' },
+  { emoji: '👩‍❤️‍👩', label: 'My friends' },
+  { emoji: '📿', label: 'My blessings' },
+  { emoji: '💤', label: 'Good sleep' },
+  { emoji: '🌸', label: 'Being alive' },
+];
 
 const MOODS = [
   { value: 'great', emoji: '😄', label: 'Great', num: 5 },
@@ -102,7 +120,36 @@ export default function Wellbeing({ data, onUpdateField, historicalData, onOpenB
 
       {/* Gratitude Journal */}
       <div className="bg-white rounded-2xl shadow-sm p-4">
-        <h3 className="text-sm font-semibold text-gray-700 mb-3">Today I'm grateful for...</h3>
+        <div className="flex items-center gap-2 mb-3">
+          <Sparkles size={16} className="text-pink-400" />
+          <h3 className="text-sm font-semibold text-gray-700">Today I'm grateful for...</h3>
+        </div>
+
+        {/* Suggestion Chips */}
+        <div className="flex flex-wrap gap-2 mb-3">
+          {GRATITUDE_SUGGESTIONS.map(s => {
+            const isUsed = mood.gratitudes.includes(s.label);
+            return (
+              <button
+                key={s.label}
+                onClick={() => {
+                  if (isUsed) return;
+                  const emptyIdx = mood.gratitudes.findIndex(g => !g || !g.trim());
+                  if (emptyIdx !== -1) setGratitude(emptyIdx, s.label);
+                }}
+                className={`flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs transition-all border ${
+                  isUsed
+                    ? 'bg-pink-50 border-pink-200 text-pink-600'
+                    : 'bg-gray-50 border-gray-200 text-gray-600 hover:bg-pink-50 hover:border-pink-200'
+                }`}
+              >
+                <span>{s.emoji}</span>
+                <span>{s.label}</span>
+              </button>
+            );
+          })}
+        </div>
+
         <div className="space-y-2">
           {[0, 1, 2].map(idx => (
             <div key={idx} className="flex items-center gap-2">
@@ -111,12 +158,23 @@ export default function Wellbeing({ data, onUpdateField, historicalData, onOpenB
                 type="text"
                 value={mood.gratitudes[idx] || ''}
                 onChange={e => setGratitude(idx, e.target.value)}
-                placeholder={`Gratitude ${idx + 1}`}
+                placeholder={idx === 0 ? 'Tap a suggestion or type your own...' : `Gratitude ${idx + 1}`}
                 className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
               />
+              {mood.gratitudes[idx] && (
+                <button
+                  onClick={() => setGratitude(idx, '')}
+                  className="text-gray-300 hover:text-gray-500 shrink-0"
+                >
+                  ×
+                </button>
+              )}
             </div>
           ))}
         </div>
+        {mood.gratitudes.filter(g => g && g.trim()).length === 3 && (
+          <p className="text-xs text-pink-400 mt-2 text-center">Beautiful! Gratitude is your superpower, Fatima.</p>
+        )}
       </div>
 
       {/* Journal Entry */}

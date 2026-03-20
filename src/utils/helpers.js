@@ -115,16 +115,16 @@ export const ACTIVITY_TYPES = [
 ];
 
 export const MOTIVATIONAL_MESSAGES = [
-  "Every healthy choice counts!",
-  "You're building something amazing.",
-  "Progress, not perfection.",
-  "Small steps lead to big changes.",
-  "You've got this, Fatima!",
-  "Today is a fresh start.",
-  "Be kind to yourself today.",
-  "Consistency is your superpower.",
-  "Your future self will thank you.",
-  "One day at a time.",
-  "Believe in your journey.",
-  "You're stronger than you think.",
+  "Every healthy choice is an act of self-love!",
+  "You're building a beautiful, healthy life, Fatima.",
+  "Progress, not perfection — and you're making incredible progress.",
+  "Small steps, big transformation. Keep going, queen!",
+  "You've got this! Your strength inspires everyone around you.",
+  "Today is a fresh start — make it beautiful.",
+  "Be kind to yourself today. You deserve kindness.",
+  "Consistency is your superpower — and you have it in abundance.",
+  "Your future self is going to be so proud of you.",
+  "One day at a time. One step at a time. You're doing amazing.",
+  "Believe in your journey. It's uniquely yours and it's beautiful.",
+  "You're stronger, braver, and more beautiful than you know.",
 ];

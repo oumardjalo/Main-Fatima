@@ -84,16 +84,17 @@ export function CalorieChart({ historicalData, target }) {
 
 export function FoodColorPieChart({ historicalData }) {
   const pieData = useMemo(() => {
-    const counts = { green: 0, yellow: 0, orange: 0 };
+    const counts = { green: 0, yellow: 0, red: 0 };
     historicalData.slice(-7).forEach(d => {
       (d?.meals || []).forEach(m => {
-        if (counts[m.color] !== undefined) counts[m.color]++;
+        if (m.color === 'orange') counts.red++;
+        else if (counts[m.color] !== undefined) counts[m.color]++;
       });
     });
     return [
       { name: 'Green', value: counts.green, color: '#10B981' },
-      { name: 'Yellow', value: counts.yellow, color: '#EAB308' },
-      { name: 'Orange', value: counts.orange, color: '#F97316' },
+      { name: 'Amber', value: counts.yellow, color: '#EAB308' },
+      { name: 'Red', value: counts.red, color: '#EF4444' },
     ].filter(d => d.value > 0);
   }, [historicalData]);
 

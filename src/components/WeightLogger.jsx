@@ -72,7 +72,7 @@ export default function WeightLogger({ data, profile, onUpdateField, historicalD
 
         <div className="space-y-3">
           <div>
-            <label className="text-sm text-gray-600 mb-1 block">Weight (lbs)</label>
+            <label className="text-sm text-gray-600 mb-1 block">Weight (kg)</label>
             <input
               type="number"
               step="0.1"
@@ -86,7 +86,7 @@ export default function WeightLogger({ data, profile, onUpdateField, historicalD
           {toGo !== null && Number(toGo) > 0 && (
             <div className="flex items-center justify-center gap-2 text-sm">
               <Target size={16} style={{ color: '#0D9488' }} />
-              <span className="text-gray-600">{toGo} lbs to go!</span>
+              <span className="text-gray-600">{toGo} kg to go!</span>
               {isOnTrack && (
                 <span className="flex items-center gap-1 text-green-500">
                   <TrendingDown size={14} /> On track!
@@ -95,9 +95,15 @@ export default function WeightLogger({ data, profile, onUpdateField, historicalD
             </div>
           )}
 
+          {toGo !== null && Number(toGo) > 0 && Number(toGo) <= 2 && (
+            <p className="text-center text-xs text-pink-500 font-medium">
+              So close, Fatima! You can almost taste victory!
+            </p>
+          )}
+
           {toGo !== null && Number(toGo) <= 0 && (
             <p className="text-center text-sm font-medium" style={{ color: '#0D9488' }}>
-              You've reached your goal! Amazing!
+              You've reached your goal! You incredible woman!
             </p>
           )}
 

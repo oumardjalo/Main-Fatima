@@ -29,9 +29,9 @@ const ACHIEVEMENT_DEFS = [
   { id: 'minutes-1000', name: '1000 Minutes', desc: 'Reach 1000 total active minutes', icon: Flame, color: '#F97316', category: 'Activity' },
 
   // Weight
-  { id: 'first-lb', name: 'First Pound', desc: 'Lose your first pound', icon: Scale, color: '#10B981', category: 'Weight' },
-  { id: 'lost-5', name: '5 Down', desc: 'Lose 5 lbs', icon: Scale, color: '#0D9488', category: 'Weight' },
-  { id: 'lost-10', name: 'Double Digits', desc: 'Lose 10 lbs', icon: Scale, color: '#059669', category: 'Weight' },
+  { id: 'first-lb', name: 'First Kilo', desc: 'Lose your first kilogram', icon: Scale, color: '#10B981', category: 'Weight' },
+  { id: 'lost-5', name: '5 Down', desc: 'Lose 5 kg', icon: Scale, color: '#0D9488', category: 'Weight' },
+  { id: 'lost-10', name: 'Double Digits', desc: 'Lose 10 kg', icon: Scale, color: '#059669', category: 'Weight' },
   { id: 'goal-reached', name: 'Goal Reached!', desc: 'Reach your goal weight', icon: Trophy, color: '#F59E0B', category: 'Weight' },
 
   // Wellbeing

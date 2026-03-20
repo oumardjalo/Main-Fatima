@@ -131,7 +131,7 @@ export default function WeeklyReport({ historicalData, profile, onClose }) {
       `Avg Mood: ${report.avgMood.toFixed(1)}/5`,
       `Avg Stress: ${report.avgStress.toFixed(1)}/10`,
       `Habits: ${report.habitRate}% completion`,
-      report.weightChange !== null ? `Weight Change: ${report.weightChange > 0 ? '+' : ''}${report.weightChange.toFixed(1)} lbs` : '',
+      report.weightChange !== null ? `Weight Change: ${report.weightChange > 0 ? '+' : ''}${report.weightChange.toFixed(1)} kg` : '',
     ].filter(Boolean);
     return lines.join('\n');
   }, [report]);
@@ -189,7 +189,7 @@ export default function WeeklyReport({ historicalData, profile, onClose }) {
           <div className="bg-gray-50 rounded-2xl p-4 mb-4">
             <p className="text-sm text-gray-600">Weight Change This Week</p>
             <p className={`text-xl font-bold ${report.weightChange <= 0 ? 'text-green-600' : 'text-orange-500'}`}>
-              {report.weightChange > 0 ? '+' : ''}{report.weightChange.toFixed(1)} lbs
+              {report.weightChange > 0 ? '+' : ''}{report.weightChange.toFixed(1)} kg
             </p>
           </div>
         )}

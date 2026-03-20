@@ -62,19 +62,19 @@ export default function Settings({ profile, onSaveProfile, onClose }) {
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-sm text-gray-600 mb-1 block">Current Weight (lbs)</label>
+                  <label className="text-sm text-gray-600 mb-1 block">Current Weight (kg)</label>
                   <input type="number" value={form.currentWeight || ''} onChange={e => update('currentWeight', Number(e.target.value))}
                     className="w-full px-3 py-2 border border-gray-300 rounded-xl text-sm" />
                 </div>
                 <div>
-                  <label className="text-sm text-gray-600 mb-1 block">Goal Weight (lbs)</label>
+                  <label className="text-sm text-gray-600 mb-1 block">Goal Weight (kg)</label>
                   <input type="number" value={form.goalWeight || ''} onChange={e => update('goalWeight', Number(e.target.value))}
                     className="w-full px-3 py-2 border border-gray-300 rounded-xl text-sm" />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-sm text-gray-600 mb-1 block">Height (inches)</label>
+                  <label className="text-sm text-gray-600 mb-1 block">Height (cm)</label>
                   <input type="number" value={form.height || ''} onChange={e => update('height', Number(e.target.value))}
                     className="w-full px-3 py-2 border border-gray-300 rounded-xl text-sm" />
                 </div>
@@ -191,8 +191,8 @@ export default function Settings({ profile, onSaveProfile, onClose }) {
           {/* About */}
           <section className="text-center py-4">
             <Heart size={20} className="mx-auto mb-2" style={{ color: '#F97316' }} />
-            <p className="text-sm text-gray-500">FatimaFit v1.0</p>
-            <p className="text-xs text-gray-400">Made with love for Fatima</p>
+            <p className="text-sm text-gray-500">FatimaFit v2.0</p>
+            <p className="text-xs text-gray-400">Made with love for the most beautiful Fatima</p>
           </section>
 
           {/* Save */}

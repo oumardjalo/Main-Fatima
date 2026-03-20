@@ -39,8 +39,8 @@ export default function ProfileSetup({ onSave }) {
           <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3" style={{ backgroundColor: '#0D9488' }}>
             <Heart className="text-white" size={32} />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900">Welcome to FatimaFit</h2>
-          <p className="text-gray-500 mt-1">Let's set up your wellness profile</p>
+          <h2 className="text-2xl font-bold text-gray-900">Welcome, Beautiful!</h2>
+          <p className="text-gray-500 mt-1">Your journey to feeling your best starts here</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -58,24 +58,24 @@ export default function ProfileSetup({ onSave }) {
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Current Weight (lbs)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Current Weight (kg)</label>
               <input
                 type="number"
                 value={form.currentWeight}
                 onChange={e => update('currentWeight', e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2"
-                placeholder="165"
+                placeholder="75"
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Goal Weight (lbs)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Goal Weight (kg)</label>
               <input
                 type="number"
                 value={form.goalWeight}
                 onChange={e => update('goalWeight', e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2"
-                placeholder="145"
+                placeholder="65"
                 required
               />
             </div>
@@ -83,13 +83,13 @@ export default function ProfileSetup({ onSave }) {
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Height (inches)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Height (cm)</label>
               <input
                 type="number"
                 value={form.height}
                 onChange={e => update('height', e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2"
-                placeholder="64"
+                placeholder="163"
               />
             </div>
             <div>
@@ -109,7 +109,7 @@ export default function ProfileSetup({ onSave }) {
             className="w-full py-3 text-white font-semibold rounded-xl transition-all hover:opacity-90"
             style={{ backgroundColor: '#0D9488' }}
           >
-            Get Started
+            Let's Do This!
           </button>
         </form>
       </div>

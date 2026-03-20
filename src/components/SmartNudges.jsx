@@ -47,41 +47,56 @@ export default function SmartNudges({ tab, data, profile, historicalData, yester
 
     if (tab === 'nutrition') {
       if (meals.length === 0 && hour >= 12) {
-        results.push({ id: 'no-meals', text: "You haven't logged any meals yet today. Let's track what you're eating!", color: '#0D9488' });
+        results.push({ id: 'no-meals', text: "Beautiful Fatima, let's nourish that amazing body of yours! Try scanning your food with the camera.", color: '#0D9488' });
       }
       if (greenCount > meals.length * 0.6 && meals.length >= 3) {
-        results.push({ id: 'green-foods', text: "Great job staying in the green today! Your food choices are on point.", color: '#10B981' });
+        results.push({ id: 'green-foods', text: "Queen! Your food choices today are incredible — so many greens! Your body is thanking you.", color: '#10B981' });
       }
       if (water.glasses < 4 && hour >= 14) {
-        results.push({ id: 'water', text: "Don't forget to drink water! You're at " + water.glasses + " glasses so far.", color: '#3B82F6' });
+        results.push({ id: 'water', text: "Hydration is your glow secret! You're at " + water.glasses + " glasses — let's get that beautiful skin glowing with more water.", color: '#3B82F6' });
+      }
+      if (meals.length > 0 && greenCount === meals.length) {
+        results.push({ id: 'all-green', text: "Every single meal today is green! You are absolutely crushing it, Fatima!", color: '#10B981' });
       }
     }
 
     if (tab === 'activity') {
       if (yesterdayIntense && activities.length === 0) {
-        results.push({ id: 'rest-day', text: "A rest day is okay! Recovery is part of the journey.", color: '#8B5CF6' });
+        results.push({ id: 'rest-day', text: "Your body worked hard yesterday — rest is how you get stronger. You deserve this recovery day.", color: '#8B5CF6' });
       }
       if (streak > 2) {
-        results.push({ id: 'streak', text: `You're on a ${streak}-day streak! Keep it up!`, color: '#F97316' });
+        results.push({ id: 'streak', text: `${streak} days in a row! That's the power of a woman who shows up for herself. So proud of you!`, color: '#F97316' });
+      }
+      if (totalMinutes >= 30) {
+        results.push({ id: 'active-today', text: `${totalMinutes} minutes of movement today! Your body is getting stronger and more beautiful every day.`, color: '#F97316' });
       }
     }
 
     if (tab === 'sleep') {
       if (avgSleep > 0 && avgSleep < 7) {
         const deficit = Math.round((7 - avgSleep) * 60);
-        results.push({ id: 'sleep-deficit', text: `You've been sleeping ${deficit} min less than 7 hours on average this week.`, color: '#6366F1' });
+        results.push({ id: 'sleep-deficit', text: `You deserve rest, Fatima. You've been getting ${deficit} min less than 7 hours. Let's prioritise your beautiful sleep tonight.`, color: '#6366F1' });
+      }
+      if (avgSleep >= 7.5) {
+        results.push({ id: 'good-sleep', text: "Your sleep has been wonderful this week! Great sleep = great energy = great you!", color: '#10B981' });
       }
     }
 
     if (tab === 'wellbeing') {
       if (!mood.value) {
-        results.push({ id: 'mood-check', text: "You haven't checked in with your mood today. How are you feeling?", color: '#8B5CF6' });
+        results.push({ id: 'mood-check', text: "How is your beautiful heart feeling today? Take a moment to check in with yourself — you matter.", color: '#8B5CF6' });
+      }
+      if (mood.gratitudes && mood.gratitudes.filter(g => g && g.trim()).length >= 3) {
+        results.push({ id: 'grateful', text: "Three gratitudes logged! A grateful heart is a happy heart. You're glowing, Fatima.", color: '#EC4899' });
       }
     }
 
     if (tab === 'dashboard') {
       if (completionPct > 60 && completionPct < 100) {
-        results.push({ id: 'almost-there', text: `You're ${completionPct}% complete today — almost there!`, color: '#0D9488' });
+        results.push({ id: 'almost-there', text: `You're ${completionPct}% complete today — you're so close to a perfect day! You've got this!`, color: '#0D9488' });
+      }
+      if (completionPct === 100) {
+        results.push({ id: 'perfect-day', text: "A perfect day! Every pillar complete. Fatima, you are extraordinary!", color: '#F59E0B' });
       }
     }
 

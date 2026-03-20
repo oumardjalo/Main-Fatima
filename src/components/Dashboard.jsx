@@ -93,7 +93,7 @@ export default function Dashboard({ data, profile, onUpdateField, onNavigate, hi
                 <TrendingUp size={12} className="text-orange-500" />
               )}
               <span className={weightTrend <= 0 ? 'text-green-500' : 'text-orange-500'}>
-                {Math.abs(weightTrend).toFixed(1)} lbs
+                {Math.abs(weightTrend).toFixed(1)} kg
               </span>
             </div>
           )}

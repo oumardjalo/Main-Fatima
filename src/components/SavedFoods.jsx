@@ -115,8 +115,8 @@ export default function SavedFoodsModal({ onAddMeal, mealType, onClose, historic
 
   const FOOD_COLORS = [
     { id: 'green', label: 'Green', color: '#10B981' },
-    { id: 'yellow', label: 'Yellow', color: '#EAB308' },
-    { id: 'orange', label: 'Orange', color: '#F97316' },
+    { id: 'yellow', label: 'Amber', color: '#EAB308' },
+    { id: 'red', label: 'Red', color: '#EF4444' },
   ];
 
   const isFaved = (name) => savedFoods.some(f => f.name === name && f.isFavorite);
