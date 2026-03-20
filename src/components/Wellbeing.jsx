@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import { Heart, Wind, ClipboardList } from 'lucide-react';
+import { MoodChart } from './Charts';
 
 const MOODS = [
   { value: 'great', emoji: '😄', label: 'Great', num: 5 },
@@ -153,6 +154,9 @@ export default function Wellbeing({ data, onUpdateField, historicalData, onOpenB
           {!isSunday && <span className="text-xs text-gray-400">Available Sunday</span>}
         </button>
       </div>
+
+      {/* Mood Chart */}
+      <MoodChart historicalData={historicalData} />
 
       {/* Mood History */}
       <div className="bg-white rounded-2xl shadow-sm p-4">

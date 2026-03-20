@@ -1,6 +1,8 @@
 import { useState, useMemo } from 'react';
 import { Plus, X, Flame, Dumbbell, Zap, Footprints, Waves, Bike, Sparkles, StretchHorizontal } from 'lucide-react';
 import { generateId, getLast7Days, ACTIVITY_TYPES, CALORIE_RATES } from '../utils/helpers';
+import { ActivityChart } from './Charts';
+import { ActivityHeatmap, PersonalRecords } from './ActivityHeatmap';
 
 const ICON_MAP = {
   Sparkles, Zap, Footprints, Waves, Bike, Dumbbell, Flame, StretchHorizontal, Plus,
@@ -173,6 +175,11 @@ export default function Activity({ data, onUpdateField, historicalData, selected
           </div>
         )}
       </div>
+
+      {/* Heatmap, Records & Chart */}
+      <ActivityHeatmap historicalData={historicalData} />
+      <PersonalRecords historicalData={historicalData} />
+      <ActivityChart historicalData={historicalData} />
 
       {/* Add Activity FAB */}
       <button

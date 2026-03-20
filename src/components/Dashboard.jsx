@@ -1,9 +1,12 @@
 import { useMemo } from 'react';
-import { TrendingUp, TrendingDown, Flame, ChevronRight, BookOpen } from 'lucide-react';
+import { TrendingUp, TrendingDown, Flame, ChevronRight, BookOpen, Trophy, BarChart3 } from 'lucide-react';
 import CompletionRings from './CompletionRings';
+import { WeightChart } from './Charts';
+import { InsightCards } from './Correlations';
+import { RecentBadges } from './Achievements';
 import { getGreeting, formatDisplayDate, getTodayKey, formatNumber, MOTIVATIONAL_MESSAGES } from '../utils/helpers';
 
-export default function Dashboard({ data, profile, onUpdateField, onNavigate, historicalData }) {
+export default function Dashboard({ data, profile, onUpdateField, onNavigate, historicalData, insights, achievements, onOpenAchievements, onOpenWeeklyReport }) {
   const today = getTodayKey();
   const greeting = getGreeting();
   const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
@@ -108,6 +111,36 @@ export default function Dashboard({ data, profile, onUpdateField, onNavigate, hi
           <p className="text-xs text-gray-400">{(data.activities || []).length} sessions</p>
         </div>
       </div>
+
+      {/* Insights */}
+      <InsightCards insights={insights || []} />
+
+      {/* Achievements */}
+      {achievements && Object.keys(achievements).length > 0 && (
+        <button onClick={onOpenAchievements} className="w-full text-left">
+          <RecentBadges achievements={achievements} />
+        </button>
+      )}
+
+      {/* Weight Chart */}
+      <WeightChart historicalData={historicalData} profile={profile} days={30} />
+
+      {/* Weekly Report Button */}
+      <button
+        onClick={onOpenWeeklyReport}
+        className="w-full bg-white rounded-2xl shadow-sm p-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
+      >
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: '#FEF3C7' }}>
+            <BarChart3 size={20} style={{ color: '#F59E0B' }} />
+          </div>
+          <div className="text-left">
+            <p className="text-sm font-medium text-gray-900">Weekly Report</p>
+            <p className="text-xs text-gray-500">View your 7-day summary</p>
+          </div>
+        </div>
+        <ChevronRight size={18} className="text-gray-400" />
+      </button>
 
       {/* Habit Checklist */}
       <div className="bg-white rounded-2xl shadow-sm p-4">

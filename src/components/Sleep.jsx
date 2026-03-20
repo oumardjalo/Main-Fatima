@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { Moon, Sun, Star, Check, Edit3 } from 'lucide-react';
 import { calcSleepDuration, formatDuration, getYesterdayKey } from '../utils/helpers';
+import { SleepChart } from './Charts';
 
 export default function Sleep({ data, yesterdayData, onUpdateField, onUpdateYesterday, profile, historicalData }) {
   const [editing, setEditing] = useState(false);
@@ -258,6 +259,9 @@ export default function Sleep({ data, yesterdayData, onUpdateField, onUpdateYest
           </div>
         </div>
       )}
+
+      {/* Sleep Chart */}
+      <SleepChart historicalData={historicalData} />
 
       {/* Sleep History */}
       <div className="bg-white rounded-2xl shadow-sm p-4">

@@ -12,6 +12,10 @@ import Wellbeing from './components/Wellbeing';
 import Sleep from './components/Sleep';
 import SettingsScreen from './components/Settings';
 import WeightLogger from './components/WeightLogger';
+import BreathingExercise from './components/BreathingExercise';
+import WeeklyReport from './components/WeeklyReport';
+import { useAchievements, AchievementCelebration, AchievementGallery } from './components/Achievements';
+import { useCorrelationInsights } from './components/Correlations';
 
 const TABS = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -25,6 +29,9 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [showSettings, setShowSettings] = useState(false);
   const [showWeightLogger, setShowWeightLogger] = useState(false);
+  const [showBreathing, setShowBreathing] = useState(false);
+  const [showWeeklyReport, setShowWeeklyReport] = useState(false);
+  const [showAchievements, setShowAchievements] = useState(false);
   const [selectedDate, setSelectedDate] = useState(getTodayKey());
 
   const todayKey = getTodayKey();
@@ -40,6 +47,24 @@ export default function App() {
   // Historical data for trends (last 30 days)
   const dateRange = useMemo(() => getDateRange(30), []);
   const { data: historicalData } = useHistoricalData(dateRange);
+
+  // Phase 2: Achievements & Correlations
+  const { achievements, newBadge, dismissBadge, defs: achievementDefs } = useAchievements(historicalData, profile);
+  const insights = useCorrelationInsights(historicalData);
+
+  // Breathing exercise activity logger
+  const handleLogBreathingActivity = useCallback((durationMin) => {
+    if (!todayData) return;
+    const newActivity = {
+      id: Date.now().toString(36),
+      type: 'yoga',
+      duration: durationMin,
+      intensity: 'Light',
+      calories: durationMin * 3,
+      notes: 'Breathing exercise',
+    };
+    updateField('activities', [...(todayData.activities || []), newActivity]);
+  }, [todayData, updateField]);
 
   // Save habit definitions on first run
   useEffect(() => {
@@ -116,6 +141,10 @@ export default function App() {
                 onNavigate={handleTabChange}
                 historicalData={historicalData}
                 onOpenWeightLogger={() => setShowWeightLogger(true)}
+                insights={insights}
+                achievements={achievements}
+                onOpenAchievements={() => setShowAchievements(true)}
+                onOpenWeeklyReport={() => setShowWeeklyReport(true)}
               />
             )}
             {activeTab === 'nutrition' && (
@@ -123,6 +152,7 @@ export default function App() {
                 data={todayData}
                 profile={profile}
                 onUpdateField={updateField}
+                historicalData={historicalData}
               />
             )}
             {activeTab === 'activity' && (
@@ -139,7 +169,7 @@ export default function App() {
                 data={todayData}
                 onUpdateField={updateField}
                 historicalData={historicalData}
-                onOpenBreathing={() => {/* Phase 2 */}}
+                onOpenBreathing={() => setShowBreathing(true)}
               />
             )}
             {activeTab === 'sleep' && (
@@ -202,6 +232,32 @@ export default function App() {
           historicalData={historicalData}
           onClose={() => setShowWeightLogger(false)}
         />
+      )}
+
+      {showBreathing && (
+        <BreathingExercise
+          onClose={() => setShowBreathing(false)}
+          onLogActivity={handleLogBreathingActivity}
+        />
+      )}
+
+      {showWeeklyReport && (
+        <WeeklyReport
+          historicalData={historicalData}
+          profile={profile}
+          onClose={() => setShowWeeklyReport(false)}
+        />
+      )}
+
+      {showAchievements && (
+        <AchievementGallery
+          achievements={achievements}
+          onClose={() => setShowAchievements(false)}
+        />
+      )}
+
+      {newBadge && (
+        <AchievementCelebration badge={newBadge} onDismiss={dismissBadge} />
       )}
     </div>
   );

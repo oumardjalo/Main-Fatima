@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Plus, X, Droplets, Star } from 'lucide-react';
 import { generateId, formatNumber } from '../utils/helpers';
+import { CalorieChart, FoodColorPieChart } from './Charts';
 
 const FOOD_COLORS = [
   { id: 'green', label: 'Green', color: '#10B981', desc: 'Nutrient-dense' },
@@ -10,7 +11,7 @@ const FOOD_COLORS = [
 
 const MEAL_TYPES = ['Breakfast', 'Lunch', 'Dinner', 'Snack'];
 
-export default function Nutrition({ data, profile, onUpdateField }) {
+export default function Nutrition({ data, profile, onUpdateField, historicalData }) {
   const [showAddModal, setShowAddModal] = useState(false);
   const [expandedMeal, setExpandedMeal] = useState(null);
   const [form, setForm] = useState({
@@ -195,6 +196,14 @@ export default function Nutrition({ data, profile, onUpdateField }) {
         </div>
         <p className="text-center text-sm text-gray-500 mt-2">{waterData.glasses} of {waterData.goal} glasses</p>
       </div>
+
+      {/* Charts */}
+      {historicalData && (
+        <>
+          <CalorieChart historicalData={historicalData} target={target} />
+          <FoodColorPieChart historicalData={historicalData} />
+        </>
+      )}
 
       {/* Add Meal FAB */}
       <button
