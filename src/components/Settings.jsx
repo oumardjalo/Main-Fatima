@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { X, Trash2, Plus, Heart } from 'lucide-react';
 import storage from '../utils/storage';
+import DataExport from './DataExport';
+import { ThemeSettings } from './ThemeProvider';
 
 export default function Settings({ profile, onSaveProfile, onClose }) {
   const [form, setForm] = useState({ ...profile });
@@ -147,6 +149,18 @@ export default function Settings({ profile, onSaveProfile, onClose }) {
                 <Plus size={18} />
               </button>
             </div>
+          </section>
+
+          {/* Theme */}
+          <section>
+            <h3 className="text-sm font-semibold text-gray-500 uppercase mb-3">Theme</h3>
+            <ThemeSettings />
+          </section>
+
+          {/* Data Export */}
+          <section>
+            <h3 className="text-sm font-semibold text-gray-500 uppercase mb-3">Export</h3>
+            <DataExport />
           </section>
 
           {/* Data */}

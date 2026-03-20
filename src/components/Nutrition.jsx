@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import { Plus, X, Droplets, Star } from 'lucide-react';
+import { Plus, X, Droplets, Star, UtensilsCrossed } from 'lucide-react';
 import { generateId, formatNumber } from '../utils/helpers';
 import { CalorieChart, FoodColorPieChart } from './Charts';
+import SavedFoodsModal from './SavedFoods';
+import Recipes from './Recipes';
 
 const FOOD_COLORS = [
   { id: 'green', label: 'Green', color: '#10B981', desc: 'Nutrient-dense' },
@@ -13,6 +15,8 @@ const MEAL_TYPES = ['Breakfast', 'Lunch', 'Dinner', 'Snack'];
 
 export default function Nutrition({ data, profile, onUpdateField, historicalData }) {
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showRecipes, setShowRecipes] = useState(false);
+  const [addMealType, setAddMealType] = useState('Breakfast');
   const [expandedMeal, setExpandedMeal] = useState(null);
   const [form, setForm] = useState({
     mealType: 'Breakfast', name: '', calories: '', protein: '', carbs: '', fat: '', color: 'green',
@@ -54,6 +58,14 @@ export default function Nutrition({ data, profile, onUpdateField, historicalData
 
   const deleteMeal = (id) => {
     onUpdateField('meals', meals.filter(m => m.id !== id));
+  };
+
+  const addMealFromSaved = (meal) => {
+    onUpdateField('meals', [...meals, { ...meal, time: meal.time || addMealType }]);
+  };
+
+  const addRecipeServing = (food) => {
+    onUpdateField('meals', [...meals, { ...food, time: 'Lunch' }]);
   };
 
   const toggleWater = (idx) => {
@@ -197,6 +209,15 @@ export default function Nutrition({ data, profile, onUpdateField, historicalData
         <p className="text-center text-sm text-gray-500 mt-2">{waterData.glasses} of {waterData.goal} glasses</p>
       </div>
 
+      {/* My Recipes button */}
+      <button
+        onClick={() => setShowRecipes(true)}
+        className="w-full bg-white rounded-2xl shadow-sm p-4 flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors"
+      >
+        <UtensilsCrossed size={18} style={{ color: '#0D9488' }} />
+        <span className="text-sm font-medium text-gray-700">My Recipes</span>
+      </button>
+
       {/* Charts */}
       {historicalData && (
         <>
@@ -207,103 +228,29 @@ export default function Nutrition({ data, profile, onUpdateField, historicalData
 
       {/* Add Meal FAB */}
       <button
-        onClick={() => setShowAddModal(true)}
+        onClick={() => { setAddMealType('Breakfast'); setShowAddModal(true); }}
         className="fixed bottom-20 right-4 w-14 h-14 rounded-full shadow-lg flex items-center justify-center text-white z-40 hover:opacity-90 transition-all"
         style={{ backgroundColor: '#0D9488' }}
       >
         <Plus size={24} />
       </button>
 
-      {/* Add Meal Modal */}
+      {/* Saved Foods Modal (replaces old basic modal) */}
       {showAddModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-end z-50">
-          <div className="bg-white rounded-t-2xl w-full p-5 max-h-[80vh] overflow-y-auto">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">Add Meal</h3>
-              <button onClick={() => setShowAddModal(false)} className="text-gray-400 hover:text-gray-600">
-                <X size={24} />
-              </button>
-            </div>
+        <SavedFoodsModal
+          mealType={addMealType}
+          onAddMeal={addMealFromSaved}
+          onClose={() => setShowAddModal(false)}
+          historicalData={historicalData}
+        />
+      )}
 
-            {/* Meal type */}
-            <div className="flex gap-2 mb-4">
-              {MEAL_TYPES.map(type => (
-                <button
-                  key={type}
-                  onClick={() => setForm(f => ({ ...f, mealType: type }))}
-                  className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all ${
-                    form.mealType === type ? 'text-white' : 'text-gray-600 bg-gray-100'
-                  }`}
-                  style={form.mealType === type ? { backgroundColor: '#0D9488' } : {}}
-                >
-                  {type}
-                </button>
-              ))}
-            </div>
-
-            <div className="space-y-3">
-              <input
-                type="text"
-                placeholder="Food name"
-                value={form.name}
-                onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500"
-              />
-
-              <input
-                type="number"
-                placeholder="Calories"
-                value={form.calories}
-                onChange={e => setForm(f => ({ ...f, calories: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500"
-              />
-
-              <div className="grid grid-cols-3 gap-2">
-                <input type="number" placeholder="Protein (g)" value={form.protein}
-                  onChange={e => setForm(f => ({ ...f, protein: e.target.value }))}
-                  className="px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm"
-                />
-                <input type="number" placeholder="Carbs (g)" value={form.carbs}
-                  onChange={e => setForm(f => ({ ...f, carbs: e.target.value }))}
-                  className="px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm"
-                />
-                <input type="number" placeholder="Fat (g)" value={form.fat}
-                  onChange={e => setForm(f => ({ ...f, fat: e.target.value }))}
-                  className="px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm"
-                />
-              </div>
-
-              {/* Food color */}
-              <div>
-                <p className="text-sm text-gray-600 mb-2">Food quality</p>
-                <div className="flex gap-3">
-                  {FOOD_COLORS.map(fc => (
-                    <button
-                      key={fc.id}
-                      onClick={() => setForm(f => ({ ...f, color: fc.id }))}
-                      className={`flex items-center gap-2 px-3 py-2 rounded-xl border-2 transition-all ${
-                        form.color === fc.id ? 'border-current' : 'border-gray-200'
-                      }`}
-                      style={form.color === fc.id ? { borderColor: fc.color, color: fc.color } : {}}
-                    >
-                      <div className="w-3 h-3 rounded-full" style={{ backgroundColor: fc.color }} />
-                      <span className="text-sm text-gray-700">{fc.label}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <button
-                onClick={addMeal}
-                disabled={!form.name || !form.calories}
-                className="w-full py-3 text-white font-semibold rounded-xl transition-all disabled:opacity-50"
-                style={{ backgroundColor: '#0D9488' }}
-              >
-                Add to {form.mealType}
-              </button>
-            </div>
-          </div>
-        </div>
+      {/* Recipes Modal */}
+      {showRecipes && (
+        <Recipes
+          onLogRecipe={addRecipeServing}
+          onClose={() => setShowRecipes(false)}
+        />
       )}
     </div>
   );

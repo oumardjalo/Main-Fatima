@@ -16,6 +16,8 @@ import BreathingExercise from './components/BreathingExercise';
 import WeeklyReport from './components/WeeklyReport';
 import { useAchievements, AchievementCelebration, AchievementGallery } from './components/Achievements';
 import { useCorrelationInsights } from './components/Correlations';
+import SmartNudges from './components/SmartNudges';
+import { ThemeProvider, useTheme } from './components/ThemeProvider';
 
 const TABS = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -25,7 +27,8 @@ const TABS = [
   { id: 'sleep', label: 'Sleep', icon: Moon },
 ];
 
-export default function App() {
+function AppContent() {
+  const { isDark, accent } = useTheme();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [showSettings, setShowSettings] = useState(false);
   const [showWeightLogger, setShowWeightLogger] = useState(false);
@@ -106,11 +109,11 @@ export default function App() {
   const activeUpdateField = activeTab === 'activity' && !isToday ? updateSelectedField : updateField;
 
   return (
-    <div className="min-h-screen pb-20" style={{ backgroundColor: '#F9FAFB' }}>
+    <div className="min-h-screen pb-20" style={{ backgroundColor: isDark ? '#0F172A' : '#F9FAFB', color: isDark ? '#F1F5F9' : undefined }}>
       {/* Header */}
-      <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-sm border-b border-gray-100">
+      <header className="sticky top-0 z-30 border-b" style={{ backgroundColor: isDark ? '#1E293B' : 'rgba(255,255,255,0.8)', backdropFilter: 'blur(8px)', borderColor: isDark ? '#334155' : '#F3F4F6' }}>
         <div className="max-w-lg mx-auto px-4 py-3 flex items-center justify-between">
-          <h1 className="text-lg font-bold" style={{ color: '#0D9488' }}>FatimaFit</h1>
+          <h1 className="text-lg font-bold" style={{ color: accent }}>FatimaFit</h1>
           <button
             onClick={() => setShowSettings(true)}
             className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors"
@@ -133,6 +136,13 @@ export default function App() {
           </div>
         ) : (
           <>
+            <SmartNudges
+              tab={activeTab}
+              data={todayData}
+              profile={profile}
+              historicalData={historicalData}
+              yesterdayData={yesterdayData}
+            />
             {activeTab === 'dashboard' && (
               <Dashboard
                 data={todayData}
@@ -187,7 +197,7 @@ export default function App() {
       </main>
 
       {/* Bottom Tab Bar */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-30">
+      <nav className="fixed bottom-0 left-0 right-0 border-t z-30" style={{ backgroundColor: isDark ? '#1E293B' : '#FFFFFF', borderColor: isDark ? '#334155' : '#E5E7EB' }}>
         <div className="max-w-lg mx-auto flex">
           {TABS.map(tab => {
             const Icon = tab.icon;
@@ -200,12 +210,12 @@ export default function App() {
               >
                 <Icon
                   size={22}
-                  color={isActive ? '#0D9488' : '#9CA3AF'}
-                  fill={isActive ? '#0D948820' : 'none'}
+                  color={isActive ? accent : '#9CA3AF'}
+                  fill={isActive ? accent + '20' : 'none'}
                 />
                 <span
                   className="text-xs font-medium"
-                  style={{ color: isActive ? '#0D9488' : '#9CA3AF' }}
+                  style={{ color: isActive ? accent : '#9CA3AF' }}
                 >
                   {tab.label}
                 </span>
@@ -260,5 +270,13 @@ export default function App() {
         <AchievementCelebration badge={newBadge} onDismiss={dismissBadge} />
       )}
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
   );
 }

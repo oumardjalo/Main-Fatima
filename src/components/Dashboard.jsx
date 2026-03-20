@@ -4,13 +4,15 @@ import CompletionRings from './CompletionRings';
 import { WeightChart } from './Charts';
 import { InsightCards } from './Correlations';
 import { RecentBadges } from './Achievements';
-import { getGreeting, formatDisplayDate, getTodayKey, formatNumber, MOTIVATIONAL_MESSAGES } from '../utils/helpers';
+import MicroLesson from './MicroLesson';
+import { getGreeting, formatDisplayDate, getTodayKey, formatNumber } from '../utils/helpers';
+import { DAILY_QUOTES } from '../data/lessons';
 
 export default function Dashboard({ data, profile, onUpdateField, onNavigate, historicalData, insights, achievements, onOpenAchievements, onOpenWeeklyReport }) {
   const today = getTodayKey();
   const greeting = getGreeting();
   const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
-  const motivationalMsg = MOTIVATIONAL_MESSAGES[dayOfYear % MOTIVATIONAL_MESSAGES.length];
+  const dailyQuote = DAILY_QUOTES[dayOfYear % DAILY_QUOTES.length];
 
   const percentages = useMemo(() => {
     if (!data) return { nutrition: 0, activity: 0, wellbeing: 0, sleep: 0, habits: 0 };
@@ -68,7 +70,7 @@ export default function Dashboard({ data, profile, onUpdateField, onNavigate, hi
       <div className="text-center pt-2">
         <h1 className="text-xl font-bold text-gray-900">{greeting}, {profile?.name || 'Fatima'}!</h1>
         <p className="text-sm text-gray-500">{formatDisplayDate(today)}</p>
-        <p className="text-sm mt-1" style={{ color: '#0D9488' }}>{motivationalMsg}</p>
+        <p className="text-sm mt-1 italic" style={{ color: '#0D9488' }}>"{dailyQuote}"</p>
       </div>
 
       {/* Completion Rings */}
@@ -111,6 +113,9 @@ export default function Dashboard({ data, profile, onUpdateField, onNavigate, hi
           <p className="text-xs text-gray-400">{(data.activities || []).length} sessions</p>
         </div>
       </div>
+
+      {/* Daily Micro-Lesson */}
+      <MicroLesson />
 
       {/* Insights */}
       <InsightCards insights={insights || []} />
